@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f4f3ed" />
+    <meta name="description" content="Turn a paper drawing into a clean digital image, ready to display." />
+    <title>Paperplane Studio</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="Paperplane Studio home">
+          <span class="brand-mark" aria-hidden="true"><span></span></span>
+          <span>paperplane<span class="brand-studio"> / studio</span></span>
+        </a>
+        <div class="topbar-right">
+          <span class="saved-state"><span class="saved-dot"></span><span id="statusText">Ready for a drawing</span></span>
+          <button class="icon-button" id="helpButton" type="button" aria-label="About Paperplane Studio" title="About this app">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M9.7 9a2.4 2.4 0 1 1 4.3 1.5c-.9 1-2 1.2-2 2.8M12 17h.01"></path></svg>
+          </button>
+        </div>
+      </header>
+
+      <main>
+        <section class="intro-row" aria-labelledby="pageTitle">
+          <div>
+            <p class="eyebrow"><span>01</span> THE DRAWING DESK</p>
+            <h1 id="pageTitle">Paper, meet <em>pixel.</em></h1>
+          </div>
+          <p class="intro-copy">Bring a little sketch to the big screen.<br />Made for the things you draw by hand.</p>
+        </section>
+
+        <section class="workbench" aria-label="Drawing digitizer">
+          <aside class="tool-rail">
+            <div class="rail-heading">
+              <span class="step-number">01</span>
+              <div><h2>Your original</h2><p>Start with a photo or scan</p></div>
+            </div>
+
+            <input id="fileInput" type="file" accept="image/*" hidden />
+            <div class="upload-area" id="dropZone" role="button" tabindex="0" aria-label="Choose or drop a drawing image">
+              <div class="upload-icon" aria-hidden="true">
+                <svg viewBox="0 0 32 32"><path d="M16 21V7m0 0L10.5 12.5M16 7l5.5 5.5"></path><path d="M7 19.5v5A2.5 2.5 0 0 0 9.5 27h13a2.5 2.5 0 0 0 2.5-2.5v-5"></path></svg>
+              </div>
+              <strong>Drop your drawing here</strong>
+              <span>or <span class="choose-link">browse files</span></span>
+              <span class="file-hint">JPG, PNG or WEBP</span>
+            </div>
+
+            <button class="camera-button" id="cameraButton" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7H8l1.4-2h5.2L16 7h2.5A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z"></path><circle cx="12" cy="12.5" r="3.25"></circle></svg>
+              Take a photo
+            </button>
+            <p class="privacy-note"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5"></rect><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"></path></svg> Your image stays on this device</p>
+
+            <div class="rail-divider"></div>
+            <div class="rail-heading tune-heading">
+              <span class="step-number">02</span>
+              <div><h2>Make it yours</h2><p>Shape the digital version</p></div>
+            </div>
+            <fieldset class="mode-fieldset">
+              <legend>FINISH</legend>
+              <div class="mode-switch" role="group" aria-label="Drawing finish">
+                <button class="mode-button active" type="button" data-mode="ink" aria-pressed="true"><span class="mode-swatch ink-swatch"></span>Ink</button>
+                <button class="mode-button" type="button" data-mode="pencil" aria-pressed="false"><span class="mode-swatch pencil-swatch"></span>Pencil</button>
+                <button class="mode-button" type="button" data-mode="color" aria-pressed="false"><span class="mode-swatch color-swatch"></span>Color</button>
+              </div>
+            </fieldset>
+
+            <label class="slider-control" for="cleanupSlider">
+              <span class="slider-label"><span>Paper cleanup</span><output id="cleanupValue" for="cleanupSlider">58%</output></span>
+              <input id="cleanupSlider" type="range" min="0" max="100" value="58" />
+              <span class="slider-hint">Fade shadows and paper texture</span>
+            </label>
+            <label class="slider-control contrast-control" for="contrastSlider">
+              <span class="slider-label"><span>Line contrast</span><output id="contrastValue" for="contrastSlider">50%</output></span>
+              <input id="contrastSlider" type="range" min="0" max="100" value="50" />
+              <span class="slider-hint">Bring your hand-drawn lines forward</span>
+            </label>
+
+            <div class="rail-footer">
+              <span class="step-number">03</span>
+              <span>Ready for the big screen?</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5"></path></svg>
+            </div>
+          </aside>
+
+          <section class="preview-panel" aria-label="Digital drawing preview">
+            <div class="preview-header">
+              <div class="preview-title"><span class="live-indicator"></span><span>Digital preview</span><span class="preview-tag" id="modeTag">CLEAN INK</span></div>
+              <div class="preview-actions">
+                <button class="text-button" id="resetButton" type="button" disabled>
+                  <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 8A6 6 0 1 1 4 11m.5-7v4h4"></path></svg>
+                  Reset
+                </button>
+                <button class="icon-button download-button" id="downloadButton" type="button" disabled aria-label="Download digital drawing" title="Download PNG">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0 4-4m-4 4-4-4M5 16v3h14v-3"></path></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="preview-frame" id="previewFrame">
+              <canvas id="drawingCanvas" aria-label="Processed drawing preview"></canvas>
+              <div class="empty-preview" id="emptyPreview">
+                <div class="empty-art" aria-hidden="true">
+                  <span class="art-sun"></span>
+                  <svg viewBox="0 0 260 190"><path class="art-ground" d="M17 163c37-27 64-28 98-9 34-22 70-26 128 4"></path><path class="art-line" d="M55 144c8-38 22-63 43-75 10 14 17 34 19 60m-62 4c16-17 29-23 44-24m36 29c4-28 15-51 38-67 20 21 31 45 33 72m-64-12c21-8 39-8 58-2"></path><path class="art-line fine" d="M38 151h184M98 69c3-8 8-15 15-20m75 1c8 6 14 13 18 22"></path></svg>
+                </div>
+                <span class="empty-kicker">YOUR CANVAS IS WAITING</span>
+                <h3>A sketch with<br />somewhere to go.</h3>
+                <p>Choose a photo of your drawing<br />to see it come to life here.</p>
+                <button class="empty-choose" id="emptyChooseButton" type="button">Choose a drawing <span aria-hidden="true">↗</span></button>
+              </div>
+              <span class="canvas-corner corner-tl"></span><span class="canvas-corner corner-br"></span>
+              <div class="canvas-info" id="canvasInfo" hidden><span id="imageDimensions"></span><span>FIT TO FRAME</span></div>
+            </div>
+
+            <div class="preview-footer">
+              <div class="display-copy"><span class="display-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="1.5"></rect><path d="M8 21h8m-4-4v4"></path></svg></span><span><strong>Made to be seen.</strong><small>Connect a screen, then go full size.</small></span></div>
+              <button class="display-button" id="displayButton" type="button" disabled>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4H5a1 1 0 0 0-1 1v3m12-4h3a1 1 0 0 1 1 1v3M4 16v3a1 1 0 0 0 1 1h3m12-4v3a1 1 0 0 1-1 1h-3"></path><path d="M9 9h6v6H9z"></path></svg>
+                <span>Display drawing</span>
+              </button>
+            </div>
+          </section>
+        </section>
+        <footer class="page-footer"><span>DRAWN BY YOU. DIGITAL BY PAPERPLANE.</span><span>Made for kitchen tables &amp; living-room walls <span class="footer-star">✳</span></span></footer>
+      </main>
+    </div>
+
+    <dialog id="cameraDialog" class="camera-dialog">
+      <div class="dialog-heading"><div><span class="eyebrow"><span>01</span> CAMERA</span><h2>Bring your drawing into view.</h2></div><button class="icon-button" id="closeCameraButton" type="button" aria-label="Close camera"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"></path></svg></button></div>
+      <video id="cameraVideo" autoplay playsinline></video>
+      <p class="camera-error" id="cameraError" hidden></p>
+      <div class="camera-controls"><span>Keep the whole page in frame, in good light.</span><button class="display-button" id="captureButton" type="button" disabled><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"></circle><circle cx="12" cy="12" r="5"></circle></svg><span>Capture drawing</span></button></div>
+    </dialog>
+    <dialog id="aboutDialog" class="about-dialog"><button class="icon-button about-close" id="closeAboutButton" type="button" aria-label="Close"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"></path></svg></button><span class="eyebrow"><span>HELLO, DRAWER</span></span><h2>Your paper drawing,<br /><em>ready for anywhere.</em></h2><p>Paperplane cleans up a photo of your sketch right in your browser. Nothing is uploaded. When you like the result, connect your laptop to a TV or projector and choose <strong>Display drawing</strong>.</p><button class="display-button" id="gotItButton" type="button"><span>Got it</span><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"></path></svg></button></dialog>
+  </body>
+</html>
